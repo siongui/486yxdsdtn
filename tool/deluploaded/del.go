@@ -28,11 +28,12 @@ func isConfirmed() bool {
 func main() {
 	path := flag.String("path", "uploaded.txt", "path to uploaded.txt")
 	flag.Parse()
-	lookupMap, err := UploadedFileToLookupMap(*path)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	fmt.Println(*path)
+	//lookupMap, err := UploadedFileToLookupMap(*path)
+	//if err != nil {
+	//	fmt.Println(err)
+	//	return
+	//}
 
 	users, err := getAllUserStat()
 	if err != nil {
@@ -52,5 +53,5 @@ func main() {
 		moveUserFiles(maxUser)
 	}
 
-	PrintUploadedInfo("story", lookupMap)
+	//PrintUploadedInfo("story", lookupMap)
 }
