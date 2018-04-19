@@ -56,5 +56,5 @@ func main() {
 	for i, username := range usernames {
 		fmt.Println(i, username)
 	}
-	WriteLinesToFile(usernames, "dlusers.txt")
+	WriteLinesToFile(usernames, "dlusers-new.txt")
 }
