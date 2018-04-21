@@ -6,7 +6,7 @@ export GOPATH=$(realpath .)
 export PATH := $(GOROOT)/bin:$(GOPATH)/bin:$(PATH)
 
 
-DIR=196algorithm
+DIR=lemoine
 
 test: fmt
 	cd $(DIR)
