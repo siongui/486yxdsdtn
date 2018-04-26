@@ -6,7 +6,7 @@ export GOPATH=$(realpath .)
 export PATH := $(GOROOT)/bin:$(GOPATH)/bin:$(PATH)
 
 
-DIR=lemoine
+DIR=divisible-by-3
 
 test: fmt
 	cd $(DIR)
