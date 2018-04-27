@@ -33,7 +33,7 @@ func WriteLinesToFile(lines []string, filename string) (err error) {
 }
 
 func main() {
-	path := flag.String("path", "dlusers.txt", "path to dlusers.txt")
+	path := flag.String("path", "dlusers.txt", "path to downloaded users txt file")
 	flag.Parse()
 
 	usernames, err := FileToLines(*path)
@@ -48,6 +48,7 @@ func main() {
 
 	todonames := []string{}
 	for _, username := range todonames {
+		igdl.DownloadUserProfilePicUrlHd(username)
 		igdl.DownloadAllPosts(username, mgr)
 		usernames = append(usernames, username)
 	}
