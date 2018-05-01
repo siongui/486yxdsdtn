@@ -7,7 +7,7 @@ export PATH := $(GOROOT)/bin:$(GOPATH)/bin:$(PATH)
 
 post: fmt
 	@echo "\033[92mDownload single post ...\033[0m"
-	@go run singlepost.go
+	@go run download.go
 
 fmt:
 	@echo "\033[92mGo fmt source code...\033[0m"
