@@ -6,13 +6,12 @@ export GOPATH=$(realpath .)
 export PATH := $(GOROOT)/bin:$(GOPATH)/bin:$(PATH)
 
 
-DIR=divisible-by-3
+DIR=line-diff
 
 test: fmt
-	cd $(DIR)
-	@echo "\033[92mRun testing code...\033[0m"
-	@go test -v $(DIR)/*.go
+	#@echo "\033[92mRun testing code...\033[0m"
+	go test -v ${DIR}/*.go
 
 fmt:
 	@echo "\033[92mGo fmt source code...\033[0m"
-	@go fmt $(DIR)/*.go
+	@go fmt ${DIR}/*.go
