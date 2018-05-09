@@ -29,15 +29,46 @@ func Diff(before, after []string) (pairs []DiffPair) {
 	}
 
 	// Fine longest common subsequence (LCS)
-	/*
-		subStartBefore := 0
-		subStartAfter := 0
-		subLength := 0
+	var overlap map[int]int
+	subStartBefore := 0
+	subStartAfter := 0
+	subLength := 0
 
-		for iafter, str := range after {
-			overlap := make(map[string]int)
+	for iafter, str := range after {
+		overlap_ := make(map[int]int)
+		if ids, ok := beforeIndexMap[str]; ok {
+			for _, ibefore := range ids {
+				if val, ok := overlap[ibefore-1]; ok {
+					if ibefore > val {
+						overlap_[ibefore] = ibefore + 1
+					} else {
+						overlap_[ibefore] = val + 1
+					}
+				} else {
+					overlap_[ibefore] = ibefore + 1
+				}
+
+				if overlap_[ibefore] > subLength {
+					// this is the largest substring seen so
+					// far, so store its indices
+					subLength = overlap_[ibefore]
+					subStartBefore = ibefore - subLength + 1
+					subStartAfter = iafter - subLength + 1
+				}
+			}
+			overlap = overlap_
 		}
-	*/
+	}
+
+	if subLength == 0 {
+		if len(before) > 0 {
+			pairs = append(pairs, DiffPair{typ: "-", items: before})
+		}
+		if len(after) > 0 {
+			pairs = append(pairs, DiffPair{typ: "+", items: after})
+		}
+	} else {
+	}
 
 	return
 }
