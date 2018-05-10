@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "igcode",
+  "description" : "Get code",
+  "version": "0.1",
+
+  "incognito": "split",
+
+  "background": {
+      "scripts": ["eventPage.js"]
+  },
+
+  "browser_action": {
+      "name": "Click to get code"
+  },
+
+  "permissions": [
+    "https://www.instagram.com/*",
+    "activeTab"
+  ]
+}
