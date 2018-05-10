@@ -9,6 +9,10 @@ export PATH := $(GOROOT)/bin:$(GOPATH)/bin:$(PATH)
 upload:
 	gphotosuploader --upload Instagram/ --maxConcurrent 1
 
+delzero:
+	@echo "\033[92mDelete zero-size files in directory ...\033[0m"
+	@go run delzero.go
+
 highlight: fmt
 	@echo "\033[92mDownload story highlights of all following users ...\033[0m"
 	@go run example/download.go -downloadtype=highlight

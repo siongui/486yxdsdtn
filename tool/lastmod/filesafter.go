@@ -11,8 +11,8 @@ import (
 
 func FindFilesAfter(dir string, t time.Time) (paths []string, infos []os.FileInfo, err error) {
 	err = filepath.Walk(dir, func(p string, i os.FileInfo, e error) error {
-		if err != nil {
-			return err
+		if e != nil {
+			return e
 		}
 
 		if !i.IsDir() && i.ModTime().After(t) {
