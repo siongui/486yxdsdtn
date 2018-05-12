@@ -6,7 +6,7 @@ export GOPATH=$(realpath .)
 export PATH := $(GOROOT)/bin:$(GOPATH)/bin:$(PATH)
 
 
-DIR=line-diff
+DIR=politeness-number
 
 test: fmt
 	#@echo "\033[92mRun testing code...\033[0m"
