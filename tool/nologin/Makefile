@@ -17,6 +17,10 @@ recent: fmt
 	@echo "\033[92mDownload single post ...\033[0m"
 	@go run downloadnologin.go -downloadtype=recent -argument=$(arg)
 
+userstory: fmt
+	@echo "\033[92mDownload user $(id) unexpired stories ...\033[0m"
+	@go run downloaduserstory.go -id=$(id)
+
 fmt:
 	@echo "\033[92mGo fmt source code...\033[0m"
 	@go fmt *.go
