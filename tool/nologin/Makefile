@@ -21,6 +21,10 @@ userstory: fmt
 	@echo "\033[92mDownload user $(id) unexpired stories ...\033[0m"
 	@go run downloaduserstory.go -id=$(id)
 
+userhighlight: fmt
+	@echo "\033[92mDownload user $(id) story highlights ...\033[0m"
+	@go run downloaduserstoryhighlight.go -id=$(id)
+
 fmt:
 	@echo "\033[92mGo fmt source code...\033[0m"
 	@go fmt *.go
