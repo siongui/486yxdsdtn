@@ -59,6 +59,14 @@ func IsSameModTime(fi1, fi2 FileData) bool {
 	return fi1.Info.ModTime() == fi2.Info.ModTime()
 }
 
+func IsToKeep(fi1, fi2 FileData) bool {
+	return IsSameName(fi1, fi2) && IsSameSize(fi1, fi2) && IsSameModTime(fi1, fi2)
+}
+
+func IsToMerge(fi1, fi2 FileData) bool {
+	return IsSameName(fi1, fi2) && !IsSameSize(fi1, fi2) && IsSameModTime(fi1, fi2)
+}
+
 func IsInDir2(fds1, fds2 []FileData) {
 	mpath := make(map[string]FileData)
 	mname := make(map[string]FileData)
@@ -79,9 +87,12 @@ func IsInDir2(fds1, fds2 []FileData) {
 	for _, fd := range fds1 {
 		fdte, ok := mname[fd.Info.Name()]
 		if ok {
-			if IsSameSize(fd, fdte) && IsSameModTime(fd, fdte) {
-				continue
+			if IsToKeep(fd, fdte) {
+				count++
+				fmt.Print(count, ": ")
+				Print2FileData(fd, fdte)
 			}
+
 			/*
 				file1, err := os.Open(fd.Path)
 				if err != nil {
@@ -94,11 +105,6 @@ func IsInDir2(fds1, fds2 []FileData) {
 				defer file1.Close()
 				defer file2.Close()
 			*/
-
-			count++
-			// name the same but size or modtime not the same
-			fmt.Print(count, ": ")
-			Print2FileData(fd, fdte)
 		}
 	}
 	fmt.Println("len fds1", len(fds1), "len fds2", len(fds2))
