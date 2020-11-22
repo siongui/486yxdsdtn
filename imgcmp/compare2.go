@@ -40,6 +40,25 @@ func AllFileData(dir string) (fds []FileData, err error) {
 	return
 }
 
+func Print2FileData(fi1, fi2 FileData) {
+	fmt.Print(fi1.Info.Name(), " ", fi1.Info.Size(), fi1.Info.ModTime())
+	fmt.Print(", ")
+	fmt.Print(fi2.Info.Name(), " ", fi2.Info.Size(), fi2.Info.ModTime())
+	fmt.Println()
+}
+
+func IsSameName(fi1, fi2 FileData) bool {
+	return fi1.Info.Name() == fi2.Info.Name()
+}
+
+func IsSameSize(fi1, fi2 FileData) bool {
+	return fi1.Info.Size() == fi2.Info.Size()
+}
+
+func IsSameModTime(fi1, fi2 FileData) bool {
+	return fi1.Info.ModTime() == fi2.Info.ModTime()
+}
+
 func IsInDir2(fds1, fds2 []FileData) {
 	mpath := make(map[string]FileData)
 	mname := make(map[string]FileData)
@@ -60,7 +79,7 @@ func IsInDir2(fds1, fds2 []FileData) {
 	for _, fd := range fds1 {
 		fdte, ok := mname[fd.Info.Name()]
 		if ok {
-			if fdte.Info.Size() == fd.Info.Size() && fdte.Info.ModTime() == fd.Info.ModTime() {
+			if IsSameSize(fd, fdte) && IsSameModTime(fd, fdte) {
 				continue
 			}
 			/*
@@ -78,7 +97,8 @@ func IsInDir2(fds1, fds2 []FileData) {
 
 			count++
 			// name the same but size or modtime not the same
-			fmt.Println(count, "same name:", fdte.Info.Name(), fdte.Info.Size(), fd.Info.Name(), fd.Info.Size())
+			fmt.Print(count, ": ")
+			Print2FileData(fd, fdte)
 		}
 	}
 	fmt.Println("len fds1", len(fds1), "len fds2", len(fds2))
