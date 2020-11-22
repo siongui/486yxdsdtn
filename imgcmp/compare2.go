@@ -3,9 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"image/jpeg"
 	"os"
 	"path/filepath"
-	//	"github.com/corona10/goimagehash"
+
+	"github.com/corona10/goimagehash"
 )
 
 type FileData struct {
@@ -65,13 +67,64 @@ func IsToKeep(fi1, fi2 FileData) bool {
 
 func IsToMerge(fi1, fi2 FileData) bool {
 	return IsSameName(fi1, fi2) && !IsSameSize(fi1, fi2) && IsSameModTime(fi1, fi2)
+
+	// not used
+	if IsSameName(fi1, fi2) && !IsSameSize(fi1, fi2) && IsSameModTime(fi1, fi2) {
+		isSame, err := IsSamePhoto(fi1.Path, fi2.Path)
+		if err != nil {
+			panic(err)
+		}
+		return isSame
+	}
+	return false
+}
+
+func IsSamePhoto(p1, p2 string) (isSame bool, err error) {
+	f1, err := os.Open(p1)
+	if err != nil {
+		return
+	}
+	defer f1.Close()
+	f2, err := os.Open(p2)
+	if err != nil {
+		return
+	}
+	defer f2.Close()
+
+	img1, err := jpeg.Decode(f1)
+	if err != nil {
+		return
+	}
+	img2, err := jpeg.Decode(f2)
+	if err != nil {
+		return
+	}
+
+	width, height := 16, 16
+	h1, err := goimagehash.ExtPerceptionHash(img1, width, height)
+	if err != nil {
+		return
+	}
+	h2, err := goimagehash.ExtPerceptionHash(img2, width, height)
+	if err != nil {
+		return
+	}
+
+	d, err := h1.Distance(h2)
+	if err != nil {
+		return
+	}
+	if d == 0 {
+		isSame = true
+	}
+	return
 }
 
 func IsInDir2(fds1, fds2 []FileData) {
 	count := 0
 	for _, fd1 := range fds1 {
 		for _, fd2 := range fds2 {
-			if IsToKeep(fd1, fd2) {
+			if IsToMerge(fd1, fd2) {
 				count++
 				fmt.Print(count, ": ")
 				Print2FileData(fd1, fd2)
