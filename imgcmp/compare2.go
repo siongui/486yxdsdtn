@@ -68,44 +68,17 @@ func IsToMerge(fi1, fi2 FileData) bool {
 }
 
 func IsInDir2(fds1, fds2 []FileData) {
-	mpath := make(map[string]FileData)
-	mname := make(map[string]FileData)
-
-	for _, fd := range fds2 {
-		if _, ok := mpath[fd.Path]; ok {
-			panic("path the same. impossible")
-		}
-		if _, ok := mname[fd.Info.Name()]; ok {
-			fmt.Println(fd.Info.Name())
-			panic("name the same. panic")
-		}
-		mpath[fd.Path] = fd
-		mname[fd.Info.Name()] = fd
-	}
-
 	count := 0
-	for _, fd := range fds1 {
-		fdte, ok := mname[fd.Info.Name()]
-		if ok {
-			if IsToKeep(fd, fdte) {
+	for _, fd1 := range fds1 {
+		for _, fd2 := range fds2 {
+			if IsToKeep(fd1, fd2) {
 				count++
 				fmt.Print(count, ": ")
-				Print2FileData(fd, fdte)
+				Print2FileData(fd1, fd2)
+				break
 			}
-
-			/*
-				file1, err := os.Open(fd.Path)
-				if err != nil {
-					panic(err)
-				}
-				file2, err := os.Open(fd.Path)
-				if err != nil {
-					panic(err)
-				}
-				defer file1.Close()
-				defer file2.Close()
-			*/
 		}
+
 	}
 	fmt.Println("len fds1", len(fds1), "len fds2", len(fds2))
 }
