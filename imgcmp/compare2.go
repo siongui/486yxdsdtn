@@ -27,6 +27,14 @@ func moveFile(todir, path string, info os.FileInfo) {
 	}
 }
 
+func removeFile(name string) {
+	fmt.Printf("remove %q\n", name)
+	err := os.Remove(name)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func AllFileData(dir string) (fds []FileData, err error) {
 	err = filepath.Walk(dir, func(path string, info os.FileInfo, e error) error {
 		if e != nil {
@@ -124,10 +132,12 @@ func IsInDir2(fds1, fds2 []FileData) {
 	count := 0
 	for _, fd1 := range fds1 {
 		for _, fd2 := range fds2 {
-			if IsToMerge(fd1, fd2) {
+			if IsToKeep(fd1, fd2) {
 				count++
 				fmt.Print(count, ": ")
 				Print2FileData(fd1, fd2)
+				//removeFile(fd1.Path)
+				//moveFile("../../keep/", fd2.Path, fd2.Info)
 				break
 			}
 		}
