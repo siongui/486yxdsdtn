@@ -87,6 +87,19 @@ func IsToMerge(fi1, fi2 FileData) bool {
 	return false
 }
 
+func KeepFirstDeleteSecond(fkeep, fdelete FileData) {
+	moveFile("../../keep/", fkeep.Path, fkeep.Info)
+	removeFile(fdelete.Path)
+}
+
+func MergeTwoFile(fi1, fi2 FileData) {
+	if fi1.Info.Size() > fi2.Info.Size() {
+		KeepFirstDeleteSecond(fi1, fi2)
+	} else {
+		KeepFirstDeleteSecond(fi2, fi1)
+	}
+}
+
 func IsSamePhoto(p1, p2 string) (isSame bool, err error) {
 	f1, err := os.Open(p1)
 	if err != nil {
@@ -132,12 +145,11 @@ func IsInDir2(fds1, fds2 []FileData) {
 	count := 0
 	for _, fd1 := range fds1 {
 		for _, fd2 := range fds2 {
-			if IsToKeep(fd1, fd2) {
+			if IsToMerge(fd1, fd2) {
 				count++
 				fmt.Print(count, ": ")
 				Print2FileData(fd1, fd2)
-				//removeFile(fd1.Path)
-				//moveFile("../../keep/", fd2.Path, fd2.Info)
+				//MergeTwoFile(fd1, fd2)
 				break
 			}
 		}
