@@ -149,6 +149,11 @@ func CompareTwoDir(fds1, fds2 []FileData) {
 				count++
 				fmt.Print(count, ": ")
 				Print2FileData(fd1, fd2)
+				if fd2.Info.Size() > fd1.Info.Size() {
+					fmt.Println("2 > 1")
+				} else {
+					fmt.Println("1 > 2")
+				}
 				//MergeTwoFile(fd1, fd2)
 				break
 			}
