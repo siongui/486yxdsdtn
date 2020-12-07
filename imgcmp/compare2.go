@@ -69,11 +69,11 @@ func IsSameModTime(fi1, fi2 FileData) bool {
 	return fi1.Info.ModTime() == fi2.Info.ModTime()
 }
 
-func IsToKeep(fi1, fi2 FileData) bool {
+func IsSameFile(fi1, fi2 FileData) bool {
 	return IsSameName(fi1, fi2) && IsSameSize(fi1, fi2) && IsSameModTime(fi1, fi2)
 }
 
-func IsToMerge(fi1, fi2 FileData) bool {
+func IsCompressedFile(fi1, fi2 FileData) bool {
 	return IsSameName(fi1, fi2) && !IsSameSize(fi1, fi2) && IsSameModTime(fi1, fi2)
 
 	// not used
@@ -141,11 +141,11 @@ func IsSamePhoto(p1, p2 string) (isSame bool, err error) {
 	return
 }
 
-func IsInDir2(fds1, fds2 []FileData) {
+func CompareTwoDir(fds1, fds2 []FileData) {
 	count := 0
 	for _, fd1 := range fds1 {
 		for _, fd2 := range fds2 {
-			if IsToMerge(fd1, fd2) {
+			if IsCompressedFile(fd1, fd2) {
 				count++
 				fmt.Print(count, ": ")
 				Print2FileData(fd1, fd2)
@@ -172,5 +172,5 @@ func main() {
 		panic(err)
 	}
 
-	IsInDir2(fds1, fds2)
+	CompareTwoDir(fds1, fds2)
 }
